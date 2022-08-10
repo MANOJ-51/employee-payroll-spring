@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ResponseClass {
-    private String message;
     private int errorCodes;
-
+    private String message;
+    private Object token;
     public ResponseClass() {
     }
 }

@@ -10,5 +10,7 @@ public class EmployeeDTO {
     private double salary;
     private String department;
     private String companyName;
+    private String emailId;
+    private String password;
 
 }

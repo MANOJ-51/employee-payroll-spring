@@ -4,10 +4,13 @@ import com.bridgelabz.employeepayrollspring.dto.EmployeeDTO;
 import com.bridgelabz.employeepayrollspring.exception.EmployeeNotFoundException;
 import com.bridgelabz.employeepayrollspring.model.EmployeeModel;
 import com.bridgelabz.employeepayrollspring.repository.IEmployeeRepository;
+import com.bridgelabz.employeepayrollspring.util.ResponseClass;
+import com.bridgelabz.employeepayrollspring.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +18,9 @@ public class EmployeeService implements IEmployeeService {
 
     @Autowired
     IEmployeeRepository iEmployeeRepository;
+
+    @Autowired
+    TokenUtil tokenUtil;
 
     @Override
     public String helloMessage() {
@@ -63,6 +69,35 @@ public class EmployeeService implements IEmployeeService {
         } else {
             throw new EmployeeNotFoundException(400, "Employee Not Found");
         }
+    }
+
+    @Override
+    public ResponseClass login(String emailId, String password) {
+        Optional<EmployeeModel> isEmailPresent = iEmployeeRepository.findByEmailId(emailId);
+        if (isEmailPresent.isPresent()){
+            if (isEmailPresent.get().getPassword().equals(password)){
+                String token = tokenUtil.createToken(isEmailPresent.get().getEmployeeID());
+                return new ResponseClass(200,"Login Success",token);
+            }else {
+                throw new EmployeeNotFoundException(400,"Password is Incorrect");
+            }
+        }
+        throw new EmployeeNotFoundException(400,"No Data Found");
+    }
+
+    @Override
+    public List<EmployeeModel> getEmployeeData(String token) {
+        Long employeeId = tokenUtil.decodeToken(token);
+        Optional<EmployeeModel> isEmployeePresent = iEmployeeRepository.findById(employeeId);
+        if (isEmployeePresent.isPresent()){
+            List<EmployeeModel> getAllEmployee = iEmployeeRepository.findAll();
+            if (getAllEmployee.size()>0){
+                return getAllEmployee;
+            }else {
+                throw new EmployeeNotFoundException(400,"No Data");
+            }
+        }
+        throw new EmployeeNotFoundException(400,"Token is Present");
     }
 
 }

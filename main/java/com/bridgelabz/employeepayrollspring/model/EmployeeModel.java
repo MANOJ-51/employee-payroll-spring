@@ -19,6 +19,8 @@ public class EmployeeModel {
     private double salary;
     private String department;
     private String companyName;
+    private String emailId;
+    private String password;
     private LocalDateTime registerDate;
     private LocalDateTime updatedDate;
 
@@ -29,7 +31,8 @@ public class EmployeeModel {
         this.salary = employeeDto.getSalary();
         this.department = employeeDto.getDepartment();
         this.companyName = employeeDto.getCompanyName();
-        this.registerDate = LocalDateTime.now();
+        this.emailId = employeeDto.getEmailId();
+        this.password=employeeDto.getPassword();
     }
 
     public EmployeeModel() {

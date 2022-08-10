@@ -3,8 +3,11 @@ package com.bridgelabz.employeepayrollspring.controller;
 import com.bridgelabz.employeepayrollspring.dto.EmployeeDTO;
 import com.bridgelabz.employeepayrollspring.model.EmployeeModel;
 import com.bridgelabz.employeepayrollspring.service.IEmployeeService;
+import com.bridgelabz.employeepayrollspring.util.ResponseClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/employeePayroll")
@@ -36,5 +39,15 @@ public class EmployeeController {
     @DeleteMapping("deleteEmployee/{id}")
     public EmployeeModel deleteEmployee(@PathVariable Long id) {
         return iEmployeeService.deleteEmployee(id);
+    }
+
+    @PostMapping("login")
+    public ResponseClass login(@RequestParam String emailId,@RequestParam String password){
+        return iEmployeeService.login(emailId,password);
+    }
+
+    @GetMapping("getEmployeeData")
+    public List<EmployeeModel> getEmployeeData(@RequestHeader String token){
+        return iEmployeeService.getEmployeeData(token);
     }
 }
