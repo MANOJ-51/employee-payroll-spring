@@ -11,9 +11,9 @@ public interface IEmployeeService {
 
     EmployeeModel addEmployee(EmployeeDTO employeeDto);
 
-    EmployeeModel updateEmployee(Long id, EmployeeDTO employeeDto);
+    EmployeeModel updateEmployee(String token,Long id, EmployeeDTO employeeDto);
 
-    EmployeeModel deleteEmployee(Long id);
+    EmployeeModel deleteEmployee(String token);
 
     EmployeeModel getEmployeeById(Long id);
 

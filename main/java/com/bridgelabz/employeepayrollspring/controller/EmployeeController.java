@@ -15,7 +15,7 @@ public class EmployeeController {
     @Autowired
     IEmployeeService iEmployeeService;
 
-    @RequestMapping(value = {"", "/", "/home"})
+    @GetMapping("/welcome")
     public String sayHello() {
         return iEmployeeService.helloMessage();
     }
@@ -31,14 +31,14 @@ public class EmployeeController {
     }
 
     @PutMapping("editEmployee/{id}")
-    public EmployeeModel updateData(@RequestBody EmployeeDTO employeeDto, @PathVariable Long id) {
-        return iEmployeeService.updateEmployee(id, employeeDto);
+    public EmployeeModel updateData(@RequestParam String token, @PathVariable Long id,@RequestBody EmployeeDTO employeeDto) {
+        return iEmployeeService.updateEmployee(token,id, employeeDto);
     }
 
 
-    @DeleteMapping("deleteEmployee/{id}")
-    public EmployeeModel deleteEmployee(@PathVariable Long id) {
-        return iEmployeeService.deleteEmployee(id);
+    @DeleteMapping("deleteEmployee")
+    public EmployeeModel deleteEmployee(String token) {
+        return iEmployeeService.deleteEmployee(token);
     }
 
     @PostMapping("login")

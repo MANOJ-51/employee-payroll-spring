@@ -36,8 +36,9 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public EmployeeModel updateEmployee(Long id, EmployeeDTO employeeDto) {
-        Optional<EmployeeModel> isEmployeePresent = iEmployeeRepository.findById(id);
+    public EmployeeModel updateEmployee(String token,Long id, EmployeeDTO employeeDto) {
+        Long employeeId = tokenUtil.decodeToken(token);
+        Optional<EmployeeModel> isEmployeePresent = iEmployeeRepository.findById(employeeId);
         if (isEmployeePresent.isPresent()) {
             isEmployeePresent.get().setFirstName(employeeDto.getFirstName());
             isEmployeePresent.get().setLastName(employeeDto.getLastName());
@@ -46,14 +47,18 @@ public class EmployeeService implements IEmployeeService {
             isEmployeePresent.get().setCompanyName(employeeDto.getCompanyName());
             isEmployeePresent.get().setUpdatedDate(LocalDateTime.now());
             isEmployeePresent.get().setAge(employeeDto.getAge());
+            isEmployeePresent.get().setEmailId(employeeDto.getEmailId());
+            isEmployeePresent.get().setPassword(employeeDto.getPassword());
+            iEmployeeRepository.save(isEmployeePresent.get());
             return isEmployeePresent.get();
         }
         throw new EmployeeNotFoundException(400, "Employee Not Present");
     }
 
     @Override
-    public EmployeeModel deleteEmployee(Long id) {
-        Optional<EmployeeModel> isPresent = iEmployeeRepository.findById(id);
+    public EmployeeModel deleteEmployee(String token) {
+        Long employeeId = tokenUtil.decodeToken(token);
+        Optional<EmployeeModel> isPresent = iEmployeeRepository.findById(employeeId);
         if (isPresent.isPresent()) {
             iEmployeeRepository.delete(isPresent.get());
             return isPresent.get();
