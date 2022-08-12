@@ -22,6 +22,9 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     TokenUtil tokenUtil;
 
+    @Autowired
+    MailService mailService;
+
     @Override
     public String helloMessage() {
         return "Hello Manoj";
@@ -32,6 +35,9 @@ public class EmployeeService implements IEmployeeService {
         EmployeeModel employeeModel = new EmployeeModel(employeeDto);
         employeeModel.setRegisterDate(LocalDateTime.now());
         iEmployeeRepository.save(employeeModel);
+        String body="Employee is added successfully with employeeId :-"+employeeModel.getEmployeeID();
+        String subject="Employee Registration Successful";
+        mailService.send(employeeModel.getEmailId(),subject,body);
         return employeeModel;
     }
 
@@ -50,7 +56,11 @@ public class EmployeeService implements IEmployeeService {
             isEmployeePresent.get().setEmailId(employeeDto.getEmailId());
             isEmployeePresent.get().setPassword(employeeDto.getPassword());
             iEmployeeRepository.save(isEmployeePresent.get());
+            String body = "Employee Contact is updated successfully with employee id "+isEmployeePresent.get().getEmployeeID();
+            String subject = "Employee updated successfully";
+            mailService.send(employeeDto.getEmailId(),subject,body);
             return isEmployeePresent.get();
+
         }
         throw new EmployeeNotFoundException(400, "Employee Not Present");
     }
@@ -61,6 +71,9 @@ public class EmployeeService implements IEmployeeService {
         Optional<EmployeeModel> isPresent = iEmployeeRepository.findById(employeeId);
         if (isPresent.isPresent()) {
             iEmployeeRepository.delete(isPresent.get());
+            String body="Employee is deleted successfully with employeeId :-"+isPresent.get().getEmployeeID();
+            String subject="Employee Removed Successfully";
+            mailService.send(isPresent.get().getEmailId(),subject,body);
             return isPresent.get();
         }
         throw new EmployeeNotFoundException(400, "Employee Not Present");
