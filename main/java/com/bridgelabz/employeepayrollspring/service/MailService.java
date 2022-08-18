@@ -48,9 +48,8 @@ public class MailService {
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
             Transport.send(msg);
-            System.out.println("Email Sent Successfully........."); }
-        catch (Exception e)
-        {
+            System.out.println("Email Sent Successfully.........");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

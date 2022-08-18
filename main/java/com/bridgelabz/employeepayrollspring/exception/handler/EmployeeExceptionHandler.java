@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class EmployeeExceptionHandler {
     @ExceptionHandler(EmployeeNotFoundException.class)
-    public ResponseEntity<ResponseClass> handleHiringException(EmployeeNotFoundException he) {
+    public ResponseEntity<ResponseClass> handleBetException(EmployeeNotFoundException he) {
         ResponseClass response = new ResponseClass();
         response.setMessage(he.getMessage());
         response.setErrorCodes(400);

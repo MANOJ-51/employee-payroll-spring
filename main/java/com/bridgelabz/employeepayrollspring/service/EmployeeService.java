@@ -29,13 +29,12 @@ public class EmployeeService implements IEmployeeService {
     public String helloMessage() {
         return "Hello Manoj";
     }
-
     @Override
     public EmployeeModel addEmployee(EmployeeDTO employeeDto) {
         EmployeeModel employeeModel = new EmployeeModel(employeeDto);
         employeeModel.setRegisterDate(LocalDateTime.now());
         iEmployeeRepository.save(employeeModel);
-        String body="Employee is added successfully with employeeId :-"+employeeModel.getEmployeeID();
+        String body="Employee is added successfully with employeeId :-"+employeeModel.getEmployeeID()+employeeDto;
         String subject="Employee Registration Successful";
         mailService.send(employeeModel.getEmailId(),subject,body);
         return employeeModel;
@@ -48,7 +47,6 @@ public class EmployeeService implements IEmployeeService {
         if (isEmployeePresent.isPresent()) {
             isEmployeePresent.get().setFirstName(employeeDto.getFirstName());
             isEmployeePresent.get().setLastName(employeeDto.getLastName());
-            isEmployeePresent.get().setDepartment(employeeDto.getDepartment());
             isEmployeePresent.get().setSalary(employeeDto.getSalary());
             isEmployeePresent.get().setCompanyName(employeeDto.getCompanyName());
             isEmployeePresent.get().setUpdatedDate(LocalDateTime.now());
@@ -115,7 +113,7 @@ public class EmployeeService implements IEmployeeService {
                 throw new EmployeeNotFoundException(400,"No Data");
             }
         }
-        throw new EmployeeNotFoundException(400,"Token is Present");
+        throw new EmployeeNotFoundException(400,"Token is Invalid");
     }
 
 }
