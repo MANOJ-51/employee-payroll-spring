@@ -116,4 +116,13 @@ public class EmployeeService implements IEmployeeService {
         throw new EmployeeNotFoundException(400,"Token is Invalid");
     }
 
+    @Override
+    public List<EmployeeModel> getListByName(String firstName) {
+        List<EmployeeModel> getByName = iEmployeeRepository.findByFirstNameContaining(firstName);
+        if (getByName.size()>0){
+            return getByName;
+        }
+        throw new EmployeeNotFoundException(400,"No Employee Found");
+    }
+
 }

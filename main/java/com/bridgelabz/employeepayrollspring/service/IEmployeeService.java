@@ -20,4 +20,6 @@ public interface IEmployeeService {
     ResponseClass login(String emailId, String password);
 
     List<EmployeeModel> getEmployeeData(String token);
+
+    List<EmployeeModel> getListByName(String firstName);
 }

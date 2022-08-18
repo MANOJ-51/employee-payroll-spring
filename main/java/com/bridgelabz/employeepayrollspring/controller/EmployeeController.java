@@ -7,6 +7,7 @@ import com.bridgelabz.employeepayrollspring.util.ResponseClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,7 @@ public class EmployeeController {
     }
 
     @PostMapping("createEmployee")
-    public EmployeeModel createEmployee(@RequestBody EmployeeDTO employeeDto) {
+    public EmployeeModel createEmployee(@RequestBody @Valid  EmployeeDTO employeeDto) {
         return iEmployeeService.addEmployee(employeeDto);
     }
 
@@ -31,7 +32,7 @@ public class EmployeeController {
     }
 
     @PutMapping("editEmployee/{id}")
-    public EmployeeModel updateData(@RequestParam String token, @PathVariable Long id,@RequestBody EmployeeDTO employeeDto) {
+    public EmployeeModel updateData(@RequestParam String token, @PathVariable Long id,@RequestBody @Valid EmployeeDTO employeeDto) {
         return iEmployeeService.updateEmployee(token,id, employeeDto);
     }
 
@@ -50,6 +51,12 @@ public class EmployeeController {
     public List<EmployeeModel> getEmployeeData(@RequestHeader String token){
         return iEmployeeService.getEmployeeData(token);
     }
+
+    @GetMapping("/findByFirstName/{firstName}")
+    public List<EmployeeModel> getByName(@PathVariable String firstName){
+        return iEmployeeService.getListByName(firstName);
+    }
+
 
 
 }
